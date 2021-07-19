@@ -135,8 +135,10 @@ function build(tokens, index, tag) {
         }
       }
     } else {
+      let lastTag = openTags[openTags.length - 1]
+      if(!lastTag) throw new Error("Invalid XML document");
       // Found a text
-      openTags[openTags.length - 1].add({name: 'text', value: tokens[index], index})
+      lastTag.add({name: 'text', value: tokens[index], index})
     }
   }
 
@@ -145,6 +147,4 @@ function build(tokens, index, tag) {
   return build(tokens, ++index, openTags[openTags.length - 1]);
 }
 
-let document = build(tokens, 0)
-console.log(document.nodes[3].nodes[1])
-//console.log(JSON.stringify(document, true, 1))
+module.exports = build
